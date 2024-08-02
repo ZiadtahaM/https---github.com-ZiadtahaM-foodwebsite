@@ -1,5 +1,5 @@
 let rowData = document.getElementById("rowData");
-let searchdata = document.getElementById("searchdata");
+let datasearch = document.getElementById("datasearch");
 let submitBtn;
 
 
@@ -18,17 +18,17 @@ function() {
 });
 
 document.getElementById('categoriesfeat').addEventListener('click', function() {
-    getCategories();
+    mealscateg();
     closeSideNav();
 });
 
 document.getElementById('arrea').addEventListener('click', function() {
-    getArea();
+    mealsbyarea();
     closeSideNav();
 });
 
 document.getElementById('recipyfeat').addEventListener('click', function() {
-    getIngredients();
+    mealsing();
     closeSideNav();
 });
 
@@ -45,7 +45,7 @@ $(document).ready(() => {
 })
 
 function open() {
-    $(".side-nav-menu").animate({
+    $(".siddmenu").animate({
         left: 0
     }, 500)
 
@@ -60,8 +60,8 @@ $(".open-close-icon").removeClass("fa-align-justify").addClass("fa-x");
 }
 
 function closeSideNav() {
-    let boxWidth = $(".side-nav-menu .nav-tab").outerWidth()
-    $(".side-nav-menu").animate({
+    let boxWidth = $(".siddmenu .siddnav").outerWidth()
+    $(".siddmenu").animate({
         left: -boxWidth
     }, 500)
 
@@ -74,8 +74,8 @@ function closeSideNav() {
 }
 
 closeSideNav()
-$(".side-nav-menu i.open-close-icon").click(() => {
-    if ($(".side-nav-menu").css("left") == "0px") {
+$(".siddmenu i.open-close-icon").click(() => {
+    if ($(".siddmenu").css("left") == "0px") {
         closeSideNav()
     } else {
         open()
@@ -93,7 +93,7 @@ function dismeals(arr) {
         <div class="col-md-3">
                 <div onclick="getMealDetails('${arr[i].idMeal}')" class="meal position-relative overflow-hidden rounded-2 cursor-pointer">
                     <img class="w-100" src="${arr[i].strMealThumb}" alt="" srcset="">
-                    <div class="meal-layer position-absolute d-flex align-items-center text-black p-2">
+                    <div class="meals position-absolute d-flex align-items-center text-black p-2">
                         <h3>${arr[i].strMeal}</h3>
                     </div>
                 </div>
@@ -106,20 +106,20 @@ function dismeals(arr) {
 
 
 
-async function getCategories() {
+async function mealscateg() {
     rowData.innerHTML = ""
-    $(".inner-loading-screen").fadeIn(300)
-    searchdata.innerHTML = "";
+    $(".loadscren").fadeIn(300)
+    datasearch.innerHTML = "";
 
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/categories.php`)
     response = await response.json()
 
-    displayCategories(response.categories)
-    $(".inner-loading-screen").fadeOut(300)
+    displaymealscat(response.categories)
+    $(".loadscren").fadeOut(300)
 
 }
 
-function displayCategories(arr) {
+function displaymealscat(arr) {
     let cont = "";
 
     for (let i = 0; i < arr.length; i++) {
@@ -127,7 +127,7 @@ function displayCategories(arr) {
         <div class="col-md-3">
                 <div onclick="getCategoryMeals('${arr[i].strCategory}')" class="meal position-relative overflow-hidden rounded-2 cursor-pointer">
                     <img class="w-100" src="${arr[i].strCategoryThumb}" alt="" srcset="">
-                    <div class="meal-layer position-absolute text-center text-black p-2">
+                    <div class="meals position-absolute text-center text-black p-2">
                         <h3>${arr[i].strCategory}</h3>
                         <p>${arr[i].strCategoryDescription.split(" ").slice(0,20).join(" ")}</p>
                     </div>
@@ -140,29 +140,29 @@ function displayCategories(arr) {
 }
 
 
-async function getArea() {
+async function mealsbyarea() {
     rowData.innerHTML = ""
-    $(".inner-loading-screen").fadeIn(300)
+    $(".loadscren").fadeIn(300)
 
-    searchdata.innerHTML = "";
+    datasearch.innerHTML = "";
 
     let respone = await fetch(`https://www.themealdb.com/api/json/v1/1/list.php?a=list`)
     respone = await respone.json()
     console.log(respone.meals);
 
-    displayArea(respone.meals)
-    $(".inner-loading-screen").fadeOut(300)
+    mealareadisplay(respone.meals)
+    $(".loadscren").fadeOut(300)
 
 }
 
 
-function displayArea(arr) {
+function mealareadisplay(arr) {
     let cont = "";
 
     for (let i = 0; i < arr.length; i++) {
         cont += `
         <div class="col-md-3">
-                <div onclick="getAreaMeals('${arr[i].strArea}')" class="rounded-2 text-center cursor-pointer">
+                <div onclick="mealsbyareaMeals('${arr[i].strArea}')" class="rounded-2 text-center cursor-pointer">
                         <i class="fa-solid fa-house-laptop fa-4x"></i>
                         <h3>${arr[i].strArea}</h3>
                 </div>
@@ -174,29 +174,29 @@ function displayArea(arr) {
 }
 
 
-async function getIngredients() {
+async function mealsing() {
     rowData.innerHTML = ""
-    $(".inner-loading-screen").fadeIn(300)
+    $(".loadscren").fadeIn(300)
 
-    searchdata.innerHTML = "";
+    datasearch.innerHTML = "";
 
     let respone = await fetch(`https://www.themealdb.com/api/json/v1/1/list.php?i=list`)
     respone = await respone.json()
     console.log(respone.meals);
 
-    displayIngredients(respone.meals.slice(0, 20))
-    $(".inner-loading-screen").fadeOut(300)
+    displaymealing(respone.meals.slice(0, 20))
+    $(".loadscren").fadeOut(300)
 
 }
 
 
-function displayIngredients(arr) {
+function displaymealing(arr) {
     let cont = "";
 
     for (let i = 0; i < arr.length; i++) {
         cont += `
         <div class="col-md-3">
-                <div onclick="getIngredientsMeals('${arr[i].strIngredient}')" class="rounded-2 text-center cursor-pointer">
+                <div onclick="mealsingMeals('${arr[i].strIngredient}')" class="rounded-2 text-center cursor-pointer">
                         <i class="fa-solid fa-drumstick-bite fa-4x"></i>
                         <h3>${arr[i].strIngredient}</h3>
                         <p>${arr[i].strDescription.split(" ").slice(0,20).join(" ")}</p>
@@ -211,154 +211,165 @@ function displayIngredients(arr) {
 
 async function getCategoryMeals(category) {
     rowData.innerHTML = ""
-    $(".inner-loading-screen").fadeIn(300)
+    $(".loadscren").fadeIn(300)
 
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`)
     response = await response.json()
 
 
     dismeals(response.meals.slice(0, 20))
-    $(".inner-loading-screen").fadeOut(300)
+    $(".loadscren").fadeOut(300)
 
 }
 
 
 
-async function getAreaMeals(area) {
+async function mealsbyareaMeals(area) {
     rowData.innerHTML = ""
-    $(".inner-loading-screen").fadeIn(300)
+    $(".loadscren").fadeIn(300)
 
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${area}`)
     response = await response.json()
 
 
     dismeals(response.meals.slice(0, 20))
-    $(".inner-loading-screen").fadeOut(300)
+    $(".loadscren").fadeOut(300)
 
 }
 
 
-async function getIngredientsMeals(ingredients) {
-    rowData.innerHTML = ""
-    $(".inner-loading-screen").fadeIn(300)
+async function mealsingMeals(ingredients) {
+    rowData.innerHTML = "";
+    document.querySelector(".loadscren").classList.add("d-block");
+    document.querySelector(".loadscren").style.opacity = 1;
 
-    let response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredients}`)
-    response = await response.json()
-
-
-    dismeals(response.meals.slice(0, 20))
-    $(".inner-loading-screen").fadeOut(300)
-
+    try {
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredients}`);
+        const data = await response.json();
+        dismeals(data.meals.slice(0, 20));
+    } catch (error) {
+        console.error(error);
+    } finally {
+        document.querySelector(".loadscren").classList.remove("d-block");
+        document.querySelector(".loadscren").style.opacity = 0;
+    }
 }
 
 async function getMealDetails(mealID) {
-    closeSideNav()
-    rowData.innerHTML = ""
-    $(".inner-loading-screen").fadeIn(300)
+    closeSideNav();
+    rowData.innerHTML = "";
+    document.querySelector(".loadscren").classList.add("d-block");
+    document.querySelector(".loadscren").style.opacity = 1;
 
-    searchdata.innerHTML = "";
-    let respone = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`);
-    respone = await respone.json();
-
-    displayMealDetails(respone.meals[0])
-    $(".inner-loading-screen").fadeOut(300)
-
+    datasearch.innerHTML = "";
+    try {
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`);
+        const data = await response.json();
+        details(data.meals[0]);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        document.querySelector(".loadscren").classList.remove("d-block");
+        document.querySelector(".loadscren").style.opacity = 0;
+    }
 }
 
 
-function displayMealDetails(meal) {
-    
-    searchdata.innerHTML = "";
+function details(meal) {
+    datasearch.innerHTML = "";
 
-
-    let ingredients = ``
-
-    for (let i = 1; i <= 20; i++) {
-        if (meal[`strIngredient${i}`]) {
-            ingredients += `<li class="alert alert-info m-2 p-1">${meal[`strMeasure${i}`]} ${meal[`strIngredient${i}`]}</li>`
+    const ingredients = Array.from({ length: 20 }, (_, i) => {
+        const ingredient = meal[`strIngredient${i + 1}`];
+        const measure = meal[`strMeasure${i + 1}`];
+        if (ingredient) {
+            return `<li class="alert alert-info m-2 p-1">${measure} ${ingredient}</li>`;
         }
-    }
+        return "";
+    }).filter(Boolean).join("");
 
-    let tags = meal.strTags?.split(",")
-    // let tags = meal.strTags.split(",")
-    if (!tags) tags = []
+    const tags = meal.strTags?.split(",")?? [];
+    const tagsStr = tags.map(tag => {
+        return `<li class="alert alert-danger m-2 p-1">${tag}</li>`;
+    }).join("");
 
-    let tagsStr = ''
-    for (let i = 0; i < tags.length; i++) {
-        tagsStr += `
-        <li class="alert alert-danger m-2 p-1">${tags[i]}</li>`
-    }
-
-
-
-    let cont = `
+    const cont = `
     <div class="col-md-4">
-                <img class="w-100 rounded-3" src="${meal.strMealThumb}"
-                    alt="">
-                    <h2>${meal.strMeal}</h2>
-            </div>
-            <div class="col-md-8">
-                <h2>Instructions</h2>
-                <p>${meal.strInstructions}</p>
-                <h3><span class="fw-bolder">Area : </span>${meal.strArea}</h3>
-                <h3><span class="fw-bolder">Category : </span>${meal.strCategory}</h3>
-                <h3>Recipes :</h3>
-                <ul class="list-unstyled d-flex g-3 flex-wrap">
-                    ${ingredients}
-                </ul>
+        <img class="w-100 rounded-3" src="${meal.strMealThumb}" alt="">
+        <h2>${meal.strMeal}</h2>
+    </div>
+    <div class="col-md-8">
+        <h2>Instructions</h2>
+        <p>${meal.strInstructions}</p>
+        <h3><span class="fw-bolder">Area : </span>${meal.strArea}</h3>
+        <h3><span class="fw-bolder">Category : </span>${meal.strCategory}</h3>
+        <h3>Recipes :</h3>
+        <ul class="list-unstyled d-flex g-3 flex-wrap">
+            ${ingredients}
+        </ul>
 
-                <h3>Tags :</h3>
-                <ul class="list-unstyled d-flex g-3 flex-wrap">
-                    ${tagsStr}
-                </ul>
+        <h3>Tags :</h3>
+        <ul class="list-unstyled d-flex g-3 flex-wrap">
+            ${tagsStr}
+        </ul>
 
-                <a target="_blank" href="${meal.strSource}" class="btn btn-success">Source</a>
-                <a target="_blank" href="${meal.strYoutube}" class="btn btn-danger">Youtube</a>
-            </div>`
+        <a target="_blank" href="${meal.strSource}" class="btn btn-success">Source</a>
+        <a target="_blank" href="${meal.strYoutube}" class="btn btn-danger">Youtube</a>
+    </div>`;
 
-    rowData.innerHTML = cont
+    rowData.innerHTML = cont;
 }
 
 
 function showSearchInputs() {
-    searchdata.innerHTML = `
-    <div class="row py-4 ">
-        <div class="col-md-6 ">
-            <input onkeyup="searchByName(this.value)" class="form-control bg-transparent text-white" type="text" placeholder="Search By Name">
+    datasearch.innerHTML = `
+    <div class="row py-4">
+        <div class="col-md-6">
+            <input id="searchByNameInput" class="form-control bg-transparent text-white" type="text" placeholder="Search By Name">
         </div>
         <div class="col-md-6">
-            <input onkeyup="searchByFLetter(this.value)" maxlength="1" class="form-control bg-transparent text-white" type="text" placeholder="Search By First Letter">
+            <input id="searchbyfirstletter" maxlength="1" class="form-control bg-transparent text-white" type="text" placeholder="Search By First Letter">
         </div>
     </div>`
 
     rowData.innerHTML = ""
-}
 
+    document.getElementById("searchByNameInput").addEventListener("keyup", () => {
+        searchByName(document.getElementById("searchByNameInput").value)
+    })
+
+    document.getElementById("searchbyfirstletter").addEventListener("keyup", () => {
+        searchByFLetter(document.getElementById("searchbyfirstletter").value)
+    })
+}
 async function searchByName(term) {
     closeSideNav()
     rowData.innerHTML = ""
-    $(".inner-loading-screen").fadeIn(300)
+    $(".loadscren").fadeIn(300)
 
     let response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${term}`)
     response = await response.json()
 
     response.meals ? dismeals(response.meals) : dismeals([])
-    $(".inner-loading-screen").fadeOut(300)
+    $(".loadscren").fadeOut(300)
 
 }
 
 async function searchByFLetter(term) {
     closeSideNav()
     rowData.innerHTML = ""
-    $(".inner-loading-screen").fadeIn(300)
+    document.querySelector(".loadscren").style.display = "block"
 
-    term == "" ? term = "a" : "";
-    let response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${term}`)
-    response = await response.json()
-
-    response.meals ? dismeals(response.meals) : dismeals([])
-    $(".inner-loading-screen").fadeOut(300)
-
+    term = term.trim() === "" ? "a" : term.trim()
+    try {
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${term}`)
+        const data = await response.json()
+        data.meals ? dismeals(data.meals) : dismeals([])
+    } catch (error) {
+        console.error(error)
+        dismeals([])
+    } finally {
+        document.querySelector(".loadscren").style.display = "none"
+    }
 }
 
 
@@ -406,133 +417,68 @@ function showContacts() {
         <button id="submitBtn" disabled class="btn btn-outline-danger px-2 mt-3">Submit</button>
     </div>
 </div> `
-    submitBtn = document.getElementById("submitBtn")
+const inputFields = {
+    name: {
+        id: 'nameInput',
+        touched: false,
+        validation: /^[a-zA-Z ]+$/,
+        alertId: 'nameAlert'
+    },
+    email: {
+        id: 'emailInput',
+        touched: false,
+        validation: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        alertId: 'emailAlert'
+    },
+    phone: {
+        id: 'phoneInput',
+        touched: false,
+        validation: /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
+        alertId: 'phoneAlert'
+    },
+    age: {
+        id: 'ageInput',
+        touched: false,
+        validation: /^(0?[1-9]|[1-9][0-9]|[1][1-9][1-9]|200)$/,
+        alertId: 'ageAlert'
+    },
+    password: {
+        id: 'passwordInput',
+        touched: false,
+        validation: /^(?=.*\d)(?=.*[a-z])[0-9a-zA-Z]{8,}$/,
+        alertId: 'passwordAlert'
+    },
+    repassword: {
+        id: 'revalidation',
+        touched: false,
+        validation: (value) => value === document.getElementById('passwordInput').value,
+        alertId: 'repasswordAlert'
+    }
+};
 
+const submitBtn = document.getElementById('submitBtn');
 
-    document.getElementById("nameInput").addEventListener("focus", () => {
-        nameInputTouched = true
-    })
-
-    document.getElementById("emailInput").addEventListener("focus", () => {
-        emailInputTouched = true
-    })
-
-    document.getElementById("phoneInput").addEventListener("focus", () => {
-        phoneInputTouched = true
-    })
-
-    document.getElementById("ageInput").addEventListener("focus", () => {
-        ageInputTouched = true
-    })
-
-    document.getElementById("passwordInput").addEventListener("focus", () => {
-        passwordInputTouched = true
-    })
-
-    document.getElementById("revalidation").addEventListener("focus", () => {
-        revalidationTouched = true
-    })
+function initInputListeners() {
+    Object.values(inputFields).forEach(field => {
+        document.getElementById(field.id).addEventListener('focus', () => {
+            field.touched = true;
+            validateInputs();
+        });
+    });
 }
 
-let nameInputTouched = false;
-let emailInputTouched = false;
-let phoneInputTouched = false;
-let ageInputTouched = false;
-let passwordInputTouched = false;
-let revalidationTouched = false;
-
-
-
-
-function inputsValidation() {
-    if (nameInputTouched) {
-        if (nameValidation()) {
-            document.getElementById("nameAlert").classList.replace("d-block", "d-none")
-
-        } else {
-            document.getElementById("nameAlert").classList.replace("d-none", "d-block")
-
+function validateInputs() {
+    Object.values(inputFields).forEach(field => {
+        if (field.touched) {
+            const isValid = typeof field.validation === 'function' ? field.validation(document.getElementById(field.id).value) : field.validation.test(document.getElementById(field.id).value);
+            const alertElement = document.getElementById(field.alertId);
+            alertElement.classList.toggle('d-block', !isValid);
+            alertElement.classList.toggle('d-none', isValid);
         }
-    }
-    if (emailInputTouched) {
+    });
 
-        if (emailValidation()) {
-            document.getElementById("emailAlert").classList.replace("d-block", "d-none")
-        } else {
-            document.getElementById("emailAlert").classList.replace("d-none", "d-block")
-
-        }
-    }
-
-    if (phoneInputTouched) {
-        if (phoneValidation()) {
-            document.getElementById("phoneAlert").classList.replace("d-block", "d-none")
-        } else {
-            document.getElementById("phoneAlert").classList.replace("d-none", "d-block")
-
-        }
-    }
-
-    if (ageInputTouched) {
-        if (ageValidation()) {
-            document.getElementById("ageAlert").classList.replace("d-block", "d-none")
-        } else {
-            document.getElementById("ageAlert").classList.replace("d-none", "d-block")
-
-        }
-    }
-
-    if (passwordInputTouched) {
-        if (passwordValidation()) {
-            document.getElementById("passwordAlert").classList.replace("d-block", "d-none")
-        } else {
-            document.getElementById("passwordAlert").classList.replace("d-none", "d-block")
-
-        }
-    }
-    if (revalidationTouched) {
-        if (repasswordValidation()) {
-            document.getElementById("repasswordAlert").classList.replace("d-block", "d-none")
-        } else {
-            document.getElementById("repasswordAlert").classList.replace("d-none", "d-block")
-
-        }
-    }
-
-
-    if (nameValidation() &&
-        emailValidation() &&
-        phoneValidation() &&
-        ageValidation() &&
-        passwordValidation() &&
-        repasswordValidation()) {
-        submitBtn.removeAttribute("disabled")
-    } else {
-        submitBtn.setAttribute("disabled", true)
-    }
+    submitBtn.disabled = !Object.values(inputFields).every(field => field.touched && typeof field.validation === 'function' ? field.validation(document.getElementById(field.id).value) : field.validation.test(document.getElementById(field.id).value));
 }
 
-function nameValidation() {
-    return (/^[a-zA-Z ]+$/.test(document.getElementById("nameInput").value))
+initInputListeners();
 }
-
-function emailValidation() {
-    return (/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(document.getElementById("emailInput").value))
-}
-
-function phoneValidation() {
-    return (/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/.test(document.getElementById("phoneInput").value))
-}
-
-function ageValidation() {
-    return (/^(0?[1-9]|[1-9][0-9]|[1][1-9][1-9]|200)$/.test(document.getElementById("ageInput").value))
-}
-
-function passwordValidation() {
-    return (/^(?=.*\d)(?=.*[a-z])[0-9a-zA-Z]{8,}$/.test(document.getElementById("passwordInput").value))
-}
-
-function repasswordValidation() {
-    return document.getElementById("revalidation").value == document.getElementById("passwordInput").value
-}
-  
